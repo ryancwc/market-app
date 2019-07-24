@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Item List</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Item List</h1>
+    <ul>
+      <%
+        var list = '';
+        for (i = 0; i < itemlist.length; i++) {
+          list += '<li><a class="items" href="/item/'+itemlist[i]._id+'"><strong>'+itemlist[i].title+'</strong>   <em>'+itemlist[i].price+'</em></a></li>';
+        }
+      %>
+      <%- list %>
+    </ul>
+    <a href="/add">Add New Item</a>
+  </body>
+</html>
+
+<!-- Old
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Item List</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Item List</h1>
+    <ul>
+      <%
+        var list = '';
+        for (i = 0; i < itemlist.length; i++) {
+          list += '<li><strong>'+itemlist[i].title+' | </strong>'+itemlist[i].text +'  | <em>'+itemlist[i].price+'</em></li>';
+        }
+      %>
+      <%- list %>
+    </ul>
+  </body>
+</html> -->
