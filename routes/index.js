@@ -4,30 +4,35 @@ var router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res, next) {
     var db = req.db;
-    var collection = db.get('itemcollection');
-    collection.find({},{},function(e,docs){
-    	res.render('index', { "itemlist" : docs});
-    });
+    var collection = db.collection('itemcollection');
+    collection.find().toArray((err, items) => {
+    	res.render('index', { "itemlist" : items});
+    })
 });
 
 /* GET add page. */
 router.get('/add', function(req, res) {
     var db = req.db;
-    var collection = db.get('itemcollection');
-    collection.find({},{},function(e,docs){
-    	res.render('add', { "itemlist" : docs});
-    });
+    var collection = db.collection('itemcollection');
+    collection.find().toArray((err, items) => {
+    	res.render('add', { "itemlist" : items});
+    })
 });
 
 /* GET specific item page */
 router.get('/item/:id', function(req, res, next) {
+	var mongo = require('mongodb');
     var db = req.db;
     var itemid = req.params.id;
-    var collection = db.get('itemcollection');
-    collection.findOne({_id:itemid},{},function(e,doc){
-    	console.log(doc);
-    	res.render('item', { "item" : doc});
-    });
+    var oid = new mongo.ObjectID(itemid);
+    console.log(itemid);
+    var collection = db.collection('itemcollection');
+    collection.findOne({'_id': oid}, (err, item) => {
+    	console.log("Hi");
+    	console.log(item);
+    	res.render('item', { "item" : item});
+    })
+
 });
 
 /* POST to Add Item */
@@ -47,7 +52,7 @@ router.post('/additem', function(req, res) {
     var itemImage = req.body.image;
 
     // Set our collection
-    var collection = db.get('itemcollection');
+    var collection = db.collection('itemcollection');
 
     // Submit to the DB
     collection.insert({

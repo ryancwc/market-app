@@ -4,9 +4,21 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-// New Code
-var monk = require('monk');
-var db = monk('localhost:27017/marketapp');
+// var monk = require('monk');
+// var db = monk('localhost:27017/marketapp');
+
+var db;
+const MongoClient = require('mongodb').MongoClient;
+const uri = "mongodb+srv://flea:1234@market-swlcy.mongodb.net/test?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true });
+client.connect(err => {
+  db = client.db("marketapp");
+  const collection = db.collection("itemcollection");
+  collection.find().toArray((err, items) => {
+    console.log(items);
+  })
+});
+
 
 
 var indexRouter = require('./routes/index');
